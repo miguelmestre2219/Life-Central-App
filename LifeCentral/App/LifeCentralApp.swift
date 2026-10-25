@@ -11,6 +11,7 @@ struct LifeCentralApp: App {
                 .environment(router)
                 .environment(ExchangeRates.shared)
                 .environment(HealthService.shared)
+                .environment(BackupService.shared)
         }
         .modelContainer(AppSchema.container)
     }
@@ -25,13 +26,19 @@ enum AppSchema {
         HealthLog.self, Friend.self,
     ]
 
+    /// SwiftData's usual place, spelled out so backups know where to look.
+    static let storeURL = URL.applicationSupportDirectory.appendingPathComponent("default.store")
+
     /// One SQLite file on the phone. The models are already shaped for iCloud,
     /// so sync can be switched on with `cloudKitDatabase: .automatic` once the
     /// iCloud capability is added to the app.
     @MainActor
     static let container: ModelContainer = {
+        try? FileManager.default.createDirectory(at: URL.applicationSupportDirectory, withIntermediateDirectories: true)
+        // A restored backup is swapped in before the store opens.
+        BackupRestore.applyPendingIfNeeded(storeURL: storeURL)
         let schema = Schema(models)
-        let config = ModelConfiguration(schema: schema, cloudKitDatabase: .none)
+        let config = ModelConfiguration(schema: schema, url: storeURL, cloudKitDatabase: .none)
         do {
             let container = try ModelContainer(for: schema, configurations: config)
             Seed.runIfNeeded(container.mainContext)

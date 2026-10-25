@@ -5,6 +5,7 @@ struct RootView: View {
     @Environment(AppRouter.self) private var router
     @Environment(\.scenePhase) private var scenePhase
     @Environment(\.modelContext) private var context
+    @Environment(BackupService.self) private var backup
     @AppStorage(SettingsKey.appLock) private var appLock = false
     @State private var isUnlocked = false
 
@@ -36,7 +37,9 @@ struct RootView: View {
             }
         }
         .overlay {
-            if appLock && !isUnlocked {
+            if backup.isRestoreStaged {
+                RestoreReadyView()
+            } else if appLock && !isUnlocked {
                 LockScreen(isUnlocked: $isUnlocked)
             }
         }
@@ -44,6 +47,7 @@ struct RootView: View {
             if phase == .background {
                 isUnlocked = false
                 Reminders.shared.reschedule(using: context)
+                backup.backUpIfDue(context: context)
             }
         }
         .task {

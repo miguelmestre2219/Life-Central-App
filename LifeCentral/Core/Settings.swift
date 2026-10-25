@@ -11,6 +11,13 @@ enum SettingsKey {
     static let healthConnected = "healthConnected"
     static let didSeedDefaults = "didSeedDefaults"
     static let userName = "userName"
+    static let backupBookmark = "backupBookmark"
+    static let backupFolderName = "backupFolderName"
+    static let backupLastAt = "backupLastAt"
+    static let backupLastSize = "backupLastSize"
+    static let backupAutomatic = "backupAutomatic"
+    static let backupID = "backupID"
+    static let backupPasswordInICloud = "backupPasswordInICloud"
 }
 
 enum AppSettings {
