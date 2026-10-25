@@ -65,6 +65,11 @@ enum MoneyFormat {
         Decimal(minor) / pow(10, CurrencyInfo.fractionDigits(code))
     }
 
+    /// For charts, which want plain numbers in whole currency units.
+    static func double(_ minor: Int, _ code: String) -> Double {
+        NSDecimalNumber(decimal: decimal(minor, code)).doubleValue
+    }
+
     static func minor(from value: Decimal, _ code: String) -> Int {
         var scaled = value * pow(10, CurrencyInfo.fractionDigits(code))
         var rounded = Decimal()

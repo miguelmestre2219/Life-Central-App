@@ -47,6 +47,7 @@ struct RootView: View {
             }
         }
         .task {
+            RecurringEntries.generate(in: context)
             await ExchangeRates.shared.refreshIfNeeded()
             Reminders.shared.requestPermissionIfNeeded()
         }
