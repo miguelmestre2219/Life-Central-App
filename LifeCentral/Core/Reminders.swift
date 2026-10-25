@@ -1,6 +1,6 @@
 import Foundation
 import SwiftData
-import UserNotifications
+@preconcurrency import UserNotifications
 
 /// Local notifications for bills, expiring documents and tasks with a time.
 /// Rebuilt from the data whenever the app goes to the background, so edits
@@ -46,14 +46,21 @@ final class Reminders {
             }
         }
 
+        // iOS keeps at most 64 pending notifications; the soonest matter most.
+        let soonest = requests.sorted { Self.fireDate($0) < Self.fireDate($1) }.prefix(60)
+        let center = self.center
+        let prefix = self.prefix
         center.getPendingNotificationRequests { pending in
-            let ours = pending.map(\.identifier).filter { $0.hasPrefix(self.prefix) }
-            self.center.removePendingNotificationRequests(withIdentifiers: ours)
-            // iOS keeps at most 64 pending notifications; the soonest matter most.
-            for request in requests.prefix(60) {
-                self.center.add(request)
+            let ours = pending.map(\.identifier).filter { $0.hasPrefix(prefix) }
+            center.removePendingNotificationRequests(withIdentifiers: ours)
+            for request in soonest {
+                center.add(request)
             }
         }
+    }
+
+    private static func fireDate(_ request: UNNotificationRequest) -> Date {
+        (request.trigger as? UNCalendarNotificationTrigger)?.nextTriggerDate() ?? .distantFuture
     }
 
     private func makeRequest(id: String, title: String, body: String, at date: Date, hour: Int?) -> UNNotificationRequest? {
