@@ -48,6 +48,9 @@ struct RootView: View {
         }
         .task {
             RecurringEntries.generate(in: context)
+            if router.liveSession == nil {
+                router.liveSession = WorkoutCoach.unfinishedSession(in: context)
+            }
             await ExchangeRates.shared.refreshIfNeeded()
             Reminders.shared.requestPermissionIfNeeded()
         }
@@ -85,6 +88,7 @@ struct RouteView: View {
         case .packing(let trip): PackingView(trip: trip)
         case .explore: ExploreView()
         case .workoutTemplate(let template): WorkoutEditorView(template: template)
+        case .exercises: ExerciseBrowserView()
         case .exerciseGuide(let id): ExerciseGuideView(exerciseID: id)
         case .progress(let id): FitnessProgressView(initialExerciseID: id)
         case .session(let session): SessionDetailView(session: session)

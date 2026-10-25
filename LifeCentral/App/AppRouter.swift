@@ -25,6 +25,7 @@ enum Route: Hashable {
     case explore
 
     case workoutTemplate(WorkoutTemplate)
+    case exercises
     case exerciseGuide(String)
     case progress(String?)
     case session(WorkoutSession)
@@ -47,7 +48,7 @@ enum Route: Hashable {
         case .search, .inbox: .today
         case .moneyCategory, .moneyEntry, .monthlyPlan, .bills: .money
         case .trip, .tripDay, .tripMap, .tripBudget, .packing, .explore: .travel
-        case .workoutTemplate, .exerciseGuide, .progress, .session, .health, .healthMetric: .fitness
+        case .workoutTemplate, .exercises, .exerciseGuide, .progress, .session, .health, .healthMetric: .fitness
         default: .more
         }
     }
