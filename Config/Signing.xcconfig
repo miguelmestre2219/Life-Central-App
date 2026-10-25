@@ -1,0 +1,9 @@
+// Signing for running on your own iPhone.
+//
+// Copy Local.xcconfig.example to Local.xcconfig (it isn't committed) and put
+// your team ID and a bundle id of your own in it. Xcode then signs the app
+// every time, even after the project is regenerated.
+
+PRODUCT_BUNDLE_IDENTIFIER = com.lifecentral.app
+
+#include? "Local.xcconfig"

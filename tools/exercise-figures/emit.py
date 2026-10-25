@@ -1,3 +1,4 @@
+import os
 from poses import M
 from meta import META
 
@@ -79,5 +80,6 @@ for key in ORDER:
             ], worked: [{worked}], props: [{props}]{extra})
         ),""")
 out += ["    ]", "}", ""]
-open('ExerciseData.swift', 'w').write("\n".join(out))
+target = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', '..', 'LifeCentral', 'Features', 'Fitness', 'ExerciseData.swift')
+open(target, 'w').write("\n".join(out))
 print(len(ORDER))

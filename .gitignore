@@ -2,3 +2,8 @@
 DerivedData/
 .DS_Store
 xcuserdata/
+Config/Local.xcconfig
+__pycache__/
+# Made by XcodeGen from project.yml
+LifeCentral/Info.plist
+LifeCentral/LifeCentral.entitlements

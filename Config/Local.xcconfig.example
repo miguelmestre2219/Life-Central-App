@@ -1,0 +1,6 @@
+// Your Apple team ID: in Xcode, pick your team once under Signing & Capabilities,
+// then find the ID under Build Settings > Development Team.
+DEVELOPMENT_TEAM = ABCDE12345
+
+// Must be unique to you. Free Apple accounts can't reuse an id someone else registered.
+PRODUCT_BUNDLE_IDENTIFIER = com.yourname.lifecentral
